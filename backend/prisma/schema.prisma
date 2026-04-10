@@ -1,0 +1,559 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum Role {
+  ADMIN
+  USER
+  PT
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum FitnessGoal {
+  LOSE_WEIGHT
+  GAIN_MUSCLE
+  IMPROVE_HEALTH
+  MAINTAIN_WEIGHT
+}
+
+enum PackageUnit {
+  DAY
+  MONTH
+}
+
+enum UserPackageStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+  EXPIRED
+  CANCELLED
+}
+
+enum MuscleGroup {
+  CHEST
+  BACK
+  LEGS
+  SHOULDERS
+  ARMS
+  ABS
+  FULL_BODY
+}
+
+enum ExerciseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum ProgramLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum PtAssistRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+enum WorkoutHistoryStatus {
+  COMPLETED
+  SKIPPED
+}
+
+enum SessionCompletion {
+  COMPLETED
+  PARTIAL
+  NO_SHOW
+}
+
+enum PtMonthlyRewardPayoutStatus {
+  DRAFT
+  APPROVED
+  PAID
+  VOID
+}
+
+enum PtMonthlyRewardPayoutSource {
+  AUTO
+  MANUAL_OVERRIDE
+}
+
+enum ShiftType{
+  MORNING
+  AFTERNOON
+  EVENING
+}
+
+
+model Account {
+  id                     String        @id @default(uuid())
+  email                  String        @unique
+  password               String
+  status                 AccountStatus @default(INACTIVE)
+  role                   Role          @default(USER)
+  verificationCode       String?
+  verificationCodeExpire DateTime?
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+
+  profile Profile?
+
+  workoutHistories WorkoutHistory[]
+
+  // 1) user mua gói
+  userPackages UserPackage[] @relation("UserPackagesOwner")
+
+  // 2) PT được gán cho gói
+  ptAssignedUserPackages UserPackage[] @relation("UserPackagesPT")
+
+  // check-in history
+  checkins CheckIn[]
+
+  // PT request: USER tạo request
+  ptAssistRequests PtAssistRequest[] @relation("PtAssistRequestsOwner")
+
+  // PT request: request gửi đến PT
+  ptIncomingAssistRequests PtAssistRequest[] @relation("PtAssistRequestsPT")
+
+  ptSessionReportsWritten  PtSessionReport[] @relation("PtSessionReportsPT")
+  ptSessionReportsReceived PtSessionReport[] @relation("PtSessionReportsUser")
+
+  ptAvailabilityWindows PtAvailabilityWindow[]
+  createdExercises     Exercise[]          @relation("ExerciseCreator")
+  createdPrograms      Program[]           @relation("ProgramCreator")
+  createdPtKpiPolicies PtMonthlyKpiPolicy[] @relation("PtMonthlyKpiPolicyCreator")
+  ptMonthlyKpiSnapshots PtMonthlyKpiSnapshot[] @relation("PtMonthlyKpiSnapshotPT")
+  ptMonthlyRewardPayouts PtMonthlyRewardPayout[] @relation("PtMonthlyRewardPayoutPT")
+  approvedPtMonthlyRewardPayouts PtMonthlyRewardPayout[] @relation("PtMonthlyRewardPayoutApprover")
+}
+
+model Profile {
+  id        String  @id @default(uuid())
+  accountId String  @unique
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  name        String?
+  gender      Gender?
+  phone       String?
+  dateOfBirth DateTime?
+  avatar      String?
+  height      Float?
+  weight      Float?
+  fitnessGoal FitnessGoal?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Branch {
+  id       String  @id @default(uuid())
+  name     String
+  address  String?
+  phone    String?
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userPackages     UserPackage[]
+  checkins         CheckIn[]
+  ptAssistRequests PtAssistRequest[]
+
+  ptAvailabilityWindows PtAvailabilityWindow[]
+}
+
+model Package {
+  id            String     @id @default(uuid())
+  name          String
+  unit          PackageUnit
+  durationValue Int
+  hasPt         Boolean    @default(false)
+  /// Số buổi PT (bắt buộc khi hasPt = true trong service)
+  ptSessionsIncluded Int?
+  price         Int
+  description   String?
+  isActive      Boolean    @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userPackages UserPackage[]
+}
+
+model UserPackage {
+  id String @id @default(uuid())
+
+  // Owner of the user package
+  accountId String
+  account   Account @relation("UserPackagesOwner", fields: [accountId], references: [id], onDelete: Cascade)
+
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id])
+
+  branchId String
+  branch   Branch @relation(fields: [branchId], references: [id])
+
+  // Legacy: PT từng được gán khi mua; flow mới không set khi purchase
+  ptAccountId String?
+  ptAccount   Account? @relation("UserPackagesPT", fields: [ptAccountId], references: [id])
+
+  /// Số buổi PT cho subscription này (copy từ package lúc mua khi có PT); quota thực tế = đếm PtAssistRequest
+  ptSessionsGranted Int?
+
+  status UserPackageStatus @default(PENDING)
+
+  startAt     DateTime?
+  endAt       DateTime?
+  activatedAt DateTime?
+  cancelledAt DateTime?
+  expiredAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  checkins         CheckIn[]
+  ptAssistRequests PtAssistRequest[]
+
+  programId String?
+  program   Program? @relation(fields: [programId], references: [id])
+
+  workoutHistories WorkoutHistory[]
+
+  @@index([programId])
+  @@index([accountId, status])
+  @@index([ptAccountId])
+  @@index([branchId])
+}
+
+model CheckIn {
+  id String @id @default(uuid())
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  userPackageId String
+  userPackage   UserPackage @relation(fields: [userPackageId], references: [id], onDelete: Cascade)
+
+  branchId String
+  branch   Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  checkedInAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([accountId, checkedInAt])
+  @@index([userPackageId, checkedInAt])
+  @@index([branchId, checkedInAt])
+}
+
+model Exercise {
+  id          String @id @default(uuid())
+  createdById String?
+  createdBy   Account? @relation("ExerciseCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  name        String
+  description String?
+  content     String?
+
+  muscleGroup MuscleGroup
+  level       ExerciseLevel
+
+  equipments String?
+  thumbnail  String?
+  videoUrl   String?
+
+  suggestion String?
+  isActive   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  programDayExercises ProgramDayExercise[]
+
+  @@index([muscleGroup])
+  @@index([level])
+  @@index([isActive])
+  @@index([createdById])
+}
+
+model Program {
+  id          String       @id @default(uuid())
+  createdById String?
+  createdBy   Account?     @relation("ProgramCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  name        String
+  description String?
+  level       ProgramLevel
+  daysPerWeek Int
+  isActive    Boolean      @default(true)
+
+  thumbnail String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  days         ProgramDay[]
+  userPackages UserPackage[]
+
+  workoutHistories WorkoutHistory[]
+
+  @@index([level])
+  @@index([isActive])
+  @@index([createdById])
+}
+
+model ProgramDay {
+  id        String  @id @default(uuid())
+  programId String
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  dayOfWeek Int
+  title     String?
+  note      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  exercises        ProgramDayExercise[]
+  workoutHistories WorkoutHistory[]
+
+  @@unique([programId, dayOfWeek])
+  @@index([programId])
+}
+
+model ProgramDayExercise {
+  id String @id @default(uuid())
+
+  programDayId String
+  programDay   ProgramDay @relation(fields: [programDayId], references: [id], onDelete: Cascade)
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  sortOrder Int
+  createdAt DateTime @default(now())
+
+  @@unique([programDayId, exerciseId])
+  @@index([exerciseId])
+  @@index([programDayId, sortOrder])
+}
+
+model PtAssistRequest {
+  id String @id @default(uuid())
+
+  accountId String
+  account   Account @relation("PtAssistRequestsOwner", fields: [accountId], references: [id], onDelete: Cascade)
+
+  userPackageId String
+  userPackage   UserPackage @relation(fields: [userPackageId], references: [id], onDelete: Cascade)
+
+  branchId String
+  branch   Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  ptAccountId String
+  ptAccount   Account @relation("PtAssistRequestsPT", fields: [ptAccountId], references: [id], onDelete: Cascade)
+
+  startTime DateTime
+  endTime   DateTime
+
+  status       PtAssistRequestStatus @default(PENDING)
+  note         String?
+  rejectReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessionReport PtSessionReport?
+
+  @@index([ptAccountId, status])
+  @@index([accountId, startTime])
+  @@index([branchId, startTime])
+  @@index([userPackageId, startTime])
+
+  @@unique([accountId, ptAccountId, startTime, endTime])
+}
+
+model WorkoutHistory {
+  id String @id @default(uuid())
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  userPackageId String
+  userPackage   UserPackage @relation(fields: [userPackageId], references: [id], onDelete: Cascade)
+
+  programId String
+  program   Program @relation(fields: [programId], references: [id])
+
+  programDayId String
+  programDay   ProgramDay @relation(fields: [programDayId], references: [id])
+
+  workoutAt DateTime @default(now())
+
+  status WorkoutHistoryStatus @default(COMPLETED)
+  note   String?
+
+  createdAt DateTime @default(now())
+
+  @@index([accountId, workoutAt])
+  @@index([userPackageId, workoutAt])
+  @@index([programId, workoutAt])
+  @@index([programDayId, workoutAt])
+
+  @@unique([accountId, programDayId, workoutAt])
+}
+
+model PtSessionReport {
+  id String @id @default(uuid())
+
+  ptAssistRequestId String @unique
+  ptAssistRequest   PtAssistRequest @relation(fields: [ptAssistRequestId], references: [id], onDelete: Cascade)
+
+  ptAccountId String
+  ptAccount   Account @relation("PtSessionReportsPT", fields: [ptAccountId], references: [id], onDelete: Cascade)
+
+  accountId String
+  account   Account @relation("PtSessionReportsUser", fields: [accountId], references: [id], onDelete: Cascade)
+
+  completion SessionCompletion @default(COMPLETED)
+
+  summary         String?
+  techniqueNote   String?
+  improvement     String?
+  nextSessionPlan String?
+
+  weightKg Float?
+  bodyNote String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ptAccountId, createdAt])
+  @@index([accountId, createdAt])
+}
+
+/// PT làm việc tại chi nhánh trong khoảng ngày [fromDate, toDate]
+model PtAvailabilityWindow {
+  id          String @id @default(uuid())
+  ptAccountId String
+  ptAccount   Account @relation(fields: [ptAccountId], references: [id], onDelete: Cascade)
+  branchId    String
+  branch      Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  fromDate DateTime
+  toDate   DateTime
+
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  weeklySlots PtWeeklySlot[]
+
+  @@index([ptAccountId, branchId])
+  @@index([branchId, fromDate, toDate])
+}
+
+/// Ô trong thời khoá biểu tuần (1 = Thứ 2 … 7 = Chủ nhật ISO); chỉ lưu ô PT bật (rảnh)
+model PtWeeklySlot {
+  id       String               @id @default(uuid())
+  windowId String
+  window   PtAvailabilityWindow @relation(fields: [windowId], references: [id], onDelete: Cascade)
+
+  dayOfWeek Int
+  startTime String
+  endTime   String
+  shiftType ShiftType?
+
+  isAvailable Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([windowId, dayOfWeek, startTime, endTime])
+  @@index([windowId])
+}
+
+model PtMonthlyKpiPolicy {
+  id String @id @default(uuid())
+
+  monthKey      String @unique
+  targetTrainees Int
+  targetSessions Int
+  rewardAmount   Int
+  isActive       Boolean @default(true)
+
+  createdByAdminId String
+  createdByAdmin   Account @relation("PtMonthlyKpiPolicyCreator", fields: [createdByAdminId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+model PtMonthlyKpiSnapshot {
+  id String @id @default(uuid())
+
+  monthKey    String
+  ptAccountId String
+  ptAccount   Account @relation("PtMonthlyKpiSnapshotPT", fields: [ptAccountId], references: [id], onDelete: Cascade)
+
+  distinctTrainees Int @default(0)
+  acceptedSessions Int @default(0)
+  achieved         Boolean @default(false)
+  rewardAmountAuto Int @default(0)
+  finalizedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payout PtMonthlyRewardPayout?
+
+  @@unique([ptAccountId, monthKey])
+  @@index([monthKey])
+}
+
+model PtMonthlyRewardPayout {
+  id String @id @default(uuid())
+
+  monthKey    String
+  ptAccountId String
+  ptAccount   Account @relation("PtMonthlyRewardPayoutPT", fields: [ptAccountId], references: [id], onDelete: Cascade)
+
+  snapshotId String? @unique
+  snapshot   PtMonthlyKpiSnapshot? @relation(fields: [snapshotId], references: [id], onDelete: SetNull)
+
+  amountAuto  Int @default(0)
+  amountFinal Int @default(0)
+
+  status PtMonthlyRewardPayoutStatus @default(DRAFT)
+  source PtMonthlyRewardPayoutSource @default(AUTO)
+
+  approvedByAdminId String?
+  approvedByAdmin   Account? @relation("PtMonthlyRewardPayoutApprover", fields: [approvedByAdminId], references: [id], onDelete: SetNull)
+  note              String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([ptAccountId, monthKey])
+  @@index([monthKey])
+  @@index([status])
+}
