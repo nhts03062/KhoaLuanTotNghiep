@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header: màu lime vàng giống design #BFFF00 */
+:root {
+  --header-accent: #bfff00;
+}
+
+/* Menu: chữ trắng, active/hover lime vàng */
+.header-menu.ant-menu-horizontal {
+  background: transparent !important;
+}
+.header-menu.ant-menu-horizontal .ant-menu-item {
+  @apply text-white font-medium;
+  margin-inline: 6px !important;
+}
+.header-menu.ant-menu-horizontal .ant-menu-item:hover {
+  color: var(--header-accent) !important;
+}
+.header-menu.ant-menu-horizontal .ant-menu-item-selected {
+  color: var(--header-accent) !important;
+}
+.header-menu.ant-menu-horizontal .ant-menu-item-selected::after,
+.header-menu.ant-menu-horizontal .ant-menu-item::after {
+  border-bottom-color: var(--header-accent) !important;
+}
+
+/* Nút Login: nền lime vàng, chữ đen, bo tròn */
+.header-login-btn.ant-btn-primary {
+  background: var(--header-accent) !important;
+  color: #000 !important;
+}
+.header-login-btn.ant-btn-primary:hover {
+  background: var(--header-accent) !important;
+  opacity: 0.9;
+  color: #000 !important;
+}
