@@ -1,0 +1,851 @@
+{
+  "info": {
+    "_postman_id": "a744c36a-08db-4ad4-86ff-97e9473f50dc",
+    "name": "Best Gym",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49492415",
+    "_collection_link": "https://go.postman.co/collection/49492415-a744c36a-08db-4ad4-86ff-97e9473f50dc?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authen",
+      "item": [
+        {
+          "name": "sign-up",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"cuong19012002@gmail.com\",\n    \"password\":\"1234567890@aA\",\n    \"confirmPassword\":\"1234567890@aA\"\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/account/sign-up",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "account",
+                "sign-up"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify account",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"cuong19012002@gmail.com\",\n    \"verificationCode\":\"652971\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/account/verify-account",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "account",
+                "verify-account"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "sign in",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"cuong19012002@gmail.com\",\n    \"password\":\"1234567890@aA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/sign-in",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "sign-in"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MjAwNjc3Zi1mYWIxLTRlZWQtYWJjNS02ZTkxYmQ5OGYyYzQiLCJlbWFpbCI6ImFkbWluQGJlc3RneW0uY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MjkxLCJleHAiOjE3NzUxNDcyOTF9.TXPmhgHl_RhoBSWU0BHc4kXfMghHmXzB75sMw59LUA4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/auth/profile",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "sign in pt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"pt5@bestgym.com\",\n    \"password\":\"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/sign-in",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "sign-in"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "sign in admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"admin@bestgym.com\",\n    \"password\":\"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/sign-in",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "sign-in"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "sign in user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"user1@bestgym.com\",\n    \"password\":\"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/sign-in",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "sign-in"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Branch",
+      "item": [
+        {
+          "name": "Get all branch",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzIyODgxNzcsImV4cCI6MTc3NDg4MDE3N30.wCdY1fFdx_m83zz4zTaB6q7WpmjQzJ-s_pDwoufLZAA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/branch?page=1&itemsPerPage=5",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "branch"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "5"
+                },
+                {
+                  "key": "search",
+                  "value": "Gò",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get branch by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/branch/fb7a99d0-1d51-459a-803f-60761f129dc7",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "branch",
+                "fb7a99d0-1d51-459a-803f-60761f129dc7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create branch",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzIzNTEyNjUsImV4cCI6MTc3NDk0MzI2NX0.pa0tJYvea2s2k-WKAC69HUxB1OUOW-ND4bLeiQtyLI4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Best Gym 1\",\n    \"address\":\"111 đường số 15 phường 8\",\n    \"phone\":\"09232323323\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/branch",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "branch"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "edit branch",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyMzUxODYwLCJleHAiOjE3NzQ5NDM4NjB9.7x-DU5J8dDB17oU79AHPSN-yh5Vu0GBgJQE5K1afOis",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Best Gym edit1\",\n    \"address\":\"111 đường số 15 phường 8\",\n    \"phone\":\"09232323323\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/branch/fb7a99d0-1d51-459a-803f-60761f129dc7",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "branch",
+                "fb7a99d0-1d51-459a-803f-60761f129dc7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete branch",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyMzUxODYwLCJleHAiOjE3NzQ5NDM4NjB9.7x-DU5J8dDB17oU79AHPSN-yh5Vu0GBgJQE5K1afOis",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/branch/fb7a99d0-1d51-459a-803f-60761f129dc7",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "branch",
+                "fb7a99d0-1d51-459a-803f-60761f129dc7"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Package",
+      "item": [
+        {
+          "name": "create package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyMzUxODYwLCJleHAiOjE3NzQ5NDM4NjB9.7x-DU5J8dDB17oU79AHPSN-yh5Vu0GBgJQE5K1afOis",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gói tập 10 ngày\",\n  \"description\": \"Đây là gói tập phù hợp cho người mới bắt đầu\",\n  \"unit\": \"DAY\",\n  \"durationValue\": 10,\n  \"hasPt\": true,\n  \"price\": 800000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/package",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "package"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get package",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/package?page=1&itemsPerPage=10&isActive=true",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "package"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "10"
+                },
+                {
+                  "key": "unit",
+                  "value": "MONTH",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get detail package",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/package/d6d78903-ab39-4f23-9802-de14eeaac90c",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "package",
+                "d6d78903-ab39-4f23-9802-de14eeaac90c"
+              ],
+              "query": [
+                {
+                  "key": "unit",
+                  "value": "MONTH",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/package/d6d78903-ab39-4f23-9802-de14eeaac90c",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "package",
+                "d6d78903-ab39-4f23-9802-de14eeaac90c"
+              ],
+              "query": [
+                {
+                  "key": "unit",
+                  "value": "MONTH",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Get PT Account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MjAwNjc3Zi1mYWIxLTRlZWQtYWJjNS02ZTkxYmQ5OGYyYzQiLCJlbWFpbCI6ImFkbWluQGJlc3RneW0uY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MjkxLCJleHAiOjE3NzUxNDcyOTF9.TXPmhgHl_RhoBSWU0BHc4kXfMghHmXzB75sMw59LUA4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/account/pt-accounts?page=1&itemsPerPage=10",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "account",
+                "pt-accounts"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "pt5",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MjAwNjc3Zi1mYWIxLTRlZWQtYWJjNS02ZTkxYmQ5OGYyYzQiLCJlbWFpbCI6ImFkbWluQGJlc3RneW0uY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MjkxLCJleHAiOjE3NzUxNDcyOTF9.TXPmhgHl_RhoBSWU0BHc4kXfMghHmXzB75sMw59LUA4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/account/user-accounts?page=1&itemsPerPage=10&search=user2",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "account",
+                "user-accounts"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "search",
+                  "value": "user2",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "UserPackage",
+      "item": [
+        {
+          "name": "Purchase package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzIzNjg2NzIsImV4cCI6MTc3NDk2MDY3Mn0.gsPZky7vF2wRoS44-VQJF3cCuL5dvV0C1sjNOOSq_y8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"packageId\":\"d8913e6d-0c38-4023-a7d1-6087e490d6af\",\n    \"branchId\":\"445127a3-c5e4-463d-a695-d0fa50078252\",\n    \"ptAccountId\":\"b6e03d3e-8500-4a7a-923e-9a8483f951a9\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/user-package/purchase",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user-package",
+                "purchase"
+              ],
+              "query": [
+                {
+                  "key": "unit",
+                  "value": "MONTH",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get my purchase package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMTRkNmU3Ny0yOGRhLTRmMDYtYmMzOS00ZWYwYzI1NTI4NzgiLCJlbWFpbCI6InVzZXIxQGJlc3RneW0uY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzM0OTA3NTYsImV4cCI6MTc3NjA4Mjc1Nn0.HzzWmD32kYCWCs26cfChUBkg6H38DkLjVuRIlbT-ytw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/user-package/my-packages",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user-package",
+                "my-packages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detail purchase user package",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmU1M2I5Zi02ZjE5LTQ1YTItOGJjNS04NWFkZjZiYTZkYTUiLCJlbWFpbCI6ImN1b25nMTkwMTIwMDJAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzIzNjg2NzIsImV4cCI6MTc3NDk2MDY3Mn0.gsPZky7vF2wRoS44-VQJF3cCuL5dvV0C1sjNOOSq_y8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/user-package/my-packages/e87ea7da-9a0a-48db-842e-29dc79773cdf",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user-package",
+                "my-packages",
+                "e87ea7da-9a0a-48db-842e-29dc79773cdf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "check in",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMTRkNmU3Ny0yOGRhLTRmMDYtYmMzOS00ZWYwYzI1NTI4NzgiLCJlbWFpbCI6InVzZXIxQGJlc3RneW0uY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzM0MDg4NTksImV4cCI6MTc3NjAwMDg1OX0.5CHchazPoetheSbrSwPXVJEMNMmUoLp-6PneLHTnC6Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userPackageId\":\"523965d1-88af-4b41-84c3-11c1dcff1d59\",\n    \"branchId\":\"25d489a4-0e15-4a87-864e-620a9de82664\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/user-package/checkin",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user-package",
+                "checkin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PT",
+      "item": [
+        {
+          "name": "Get requested pt",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZDJmMDA3Yi01OGI0LTQzYjAtYmE0Yy1mZGM3ZDlkNjMyNDkiLCJlbWFpbCI6InB0NUBiZXN0Z3ltLmNvbSIsInJvbGUiOiJQVCIsImlhdCI6MTc3MzQwODQyMiwiZXhwIjoxNzc2MDAwNDIyfQ.H0Pb-OMqffpeVtOYARWvwP2frVowhIEOLAbmXRdSoms",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/pt/requested-packages",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pt",
+                "requested-packages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "accepted request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZDJmMDA3Yi01OGI0LTQzYjAtYmE0Yy1mZGM3ZDlkNjMyNDkiLCJlbWFpbCI6InB0NUBiZXN0Z3ltLmNvbSIsInJvbGUiOiJQVCIsImlhdCI6MTc3MzQ3ODA1NywiZXhwIjoxNzc2MDcwMDU3fQ.OrJ-1q5DtOGiGwMTSWYbEwn7NncsYQ_peGOy7RnRkZc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/pt/accepted-request/da1bf071-aa0d-4f78-b22b-17f62e3ceb32",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pt",
+                "accepted-request",
+                "da1bf071-aa0d-4f78-b22b-17f62e3ceb32"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get accepted trainee",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZDJmMDA3Yi01OGI0LTQzYjAtYmE0Yy1mZGM3ZDlkNjMyNDkiLCJlbWFpbCI6InB0NUBiZXN0Z3ltLmNvbSIsInJvbGUiOiJQVCIsImlhdCI6MTc3MzQ3ODQyMSwiZXhwIjoxNzc2MDcwNDIxfQ.yL5BaxhxOQWlNbjlnCk32wWhquExv0fEywibI5NzEJ8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/pt/accepted-packages",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "pt",
+                "accepted-packages"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
