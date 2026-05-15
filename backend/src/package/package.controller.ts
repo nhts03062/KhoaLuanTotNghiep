@@ -53,6 +53,6 @@ export class PackageController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   async remove(@Param('id') id: string) {
-    return this.packageService.remove(id);
+
   }
 }

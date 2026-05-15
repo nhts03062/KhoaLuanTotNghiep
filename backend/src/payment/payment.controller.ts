@@ -37,7 +37,6 @@ export class PaymentController {
     @Query() query: ReturnQueryFromVNPay,
     @Res() res: Response,
   ) {
-    const outcome = await this.paymentService.handleDemoReturn(query);
-    return res.redirect(302, outcome.redirectUrl);
+
   }
 }

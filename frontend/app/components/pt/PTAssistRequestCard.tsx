@@ -96,13 +96,7 @@ export default function PTAssistRequestCard({
             Chấp nhận
           </Button>
           <Button
-            danger
-            block
-            loading={isLoading}
-            onClick={() => onReject?.(request)}
-          >
-            Từ chối
-          </Button>
+                     </Button>
         </div>
       ) : null}
     </Card>
